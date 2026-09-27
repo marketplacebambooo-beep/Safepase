@@ -1,0 +1,33 @@
+To: support@africastalking.com
+Subject: Live USSD + SMS request — SafePass maternal health app (Zimbabwe / CIMAS Healthathon)
+
+Dear Africa's Talking Support,
+
+We are building SafePass, a maternal referral and birth preparedness platform for the CIMAS Healthathon 3.0 showcase in Zimbabwe. We need live USSD and SMS resources to test on physical phones.
+
+Project: SafePass — Maternal Referral & Birth Preparedness Network
+Team contact: Solomon Panganai Mupona — solomonmupona0@gmail.com
+Country: Zimbabwe
+
+We request:
+
+1. LIVE USSD short code (or shared test code) for Zimbabwe
+   - Callback URL: https://agnostic-parish-sandbag.ngrok-free.dev/ussd/callback
+   - Method: HTTP POST (form: sessionId, phoneNumber, text)
+   - Response: plain text starting with CON or END
+
+2. Phone numbers to whitelist for live testing:
+   - +263773566281  (CHW test handset)
+   - +263773566281  (nurse/clinic alerts, optional)
+
+3. Alphanumeric Sender ID: SAFEPASS
+   - Use case: maternal health alerts, referral notifications, ANC reminders
+   - Sample message: "SafePass: Danger sign recorded. Go to clinic if symptoms worsen. Ref SP-2026-0001."
+
+4. Confirmation of our live application username for API access.
+
+Our backend is ready and deployed behind HTTPS. We will register the USSD callback in the dashboard as soon as the code is assigned.
+
+Thank you,
+Solomon Panganai Mupona
+SafePass / CIMAS Healthathon 3.0

@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+backend/.env
+backend/safepass.db
+frontend/node_modules/
+frontend/dist/
+.DS_Store
+.idea/
+.vscode/
+*.log

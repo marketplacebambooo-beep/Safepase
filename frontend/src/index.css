@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+  }
+
+  ::selection {
+    @apply bg-brand-500 text-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-brand-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:from-brand-600 hover:to-teal-600;
+  }
+  .btn-primary:disabled {
+    @apply cursor-not-allowed from-slate-300 to-slate-300 text-slate-500 shadow-none hover:from-slate-300 hover:to-slate-300;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50/50;
+  }
+  .input-field {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-brand-400 focus:ring-2 focus:ring-brand-100;
+  }
+  .card-panel {
+    @apply rounded-2xl border border-slate-200/80 bg-white shadow-card;
+  }
+  .cimas-gradient-text {
+    @apply bg-gradient-to-r from-brand-500 via-sky-500 to-teal-500 bg-clip-text text-transparent;
+  }
+}

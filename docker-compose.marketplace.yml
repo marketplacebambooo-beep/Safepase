@@ -1,0 +1,16 @@
+services:
+  safepass:
+    build: .
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend/.env
+    environment:
+      - PORT=8001
+      - DATABASE_URL=sqlite:///./data/safepass.db
+      - SEED_ON_STARTUP=${SEED_ON_STARTUP:-true}
+    volumes:
+      - safepass-data:/app/data
+
+volumes:
+  safepass-data:

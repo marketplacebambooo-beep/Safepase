@@ -1,0 +1,66 @@
+{
+  "name": "SafePass",
+  "slug": "safepass",
+  "short_description": "Offline maternal referral network: CHWs on USSD, clinics and hospitals on SMS, Voice, and a web dashboard.",
+  "long_description": "SafePass is a marketplace plugin that any clinic, NGO, or district health team can deploy as their own isolated instance. Community health workers register patients, check in, and report danger signs from a feature phone using USSD — no smartphone or internet required. Clinic nurses get SMS the moment a high-risk sign is reported, and Africa's Talking Voice calls them for red or emergency cases. Hospitals receive a pre-arrival SMS (and an emergency voice brief) when a referral is issued. CHWs earn small airtime rewards for completed registrations and danger-sign reports.\n\nEach subscriber gets their own URL, database, Africa's Talking credentials, and USSD code. Languages: English, ChiShona, and isiNdebele. Optional OpenAI triage briefs fall back to rules when no API key is set.",
+  "logo": "marketplace/logo.png",
+  "at_products": ["USSD", "Bulk SMS", "Voice", "Airtime"],
+  "industries": ["Government", "Other"],
+  "git_repo": "",
+  "database": {
+    "engine": "sqlite",
+    "path": "/app/data/safepass.db",
+    "volume": "/app/data"
+  },
+  "container": {
+    "image": "safepass:latest",
+    "port": 8001,
+    "port_env": "PORT",
+    "health": "/health"
+  },
+  "environment_variables": [
+    { "name": "SECRET_KEY", "required": true, "description": "JWT signing secret. Generate a long random string per instance." },
+    { "name": "AT_USERNAME", "required": true, "description": "Africa's Talking live app username." },
+    { "name": "AT_API_KEY", "required": true, "description": "Africa's Talking live API key." },
+    { "name": "PUBLIC_API_URL", "required": true, "description": "Public HTTPS origin of this instance, no trailing slash. Used to show USSD and Voice callback URLs." },
+    { "name": "SMS_SENDER_ID", "required": false, "default": "SAFEPASS", "description": "Approved SMS sender ID." },
+    { "name": "USSD_SERVICE_CODE", "required": false, "default": "*123#", "description": "USSD code assigned by Africa's Talking." },
+    { "name": "AT_VOICE_PHONE", "required": false, "description": "Africa's Talking Voice number in international format, e.g. +2547..." },
+    { "name": "VOICE_ENABLED", "required": false, "default": "true", "description": "Call clinic or hospital staff on red/emergency events." },
+    { "name": "AIRTIME_ENABLED", "required": false, "default": "true", "description": "Send CHW airtime rewards for registrations and danger-sign reports." },
+    { "name": "AIRTIME_CURRENCY", "required": false, "default": "USD", "description": "ISO currency for airtime, e.g. USD, KES, NGN." },
+    { "name": "AIRTIME_AMOUNT", "required": false, "default": "0.20", "description": "Airtime amount per qualifying CHW action." },
+    { "name": "SEED_ON_STARTUP", "required": false, "default": "true", "description": "Create demo clinic, hospital, admin, and CHW on first empty database." },
+    { "name": "DATABASE_URL", "required": false, "default": "sqlite:///./data/safepass.db", "description": "SQLAlchemy URL. Persist /app/data for SQLite." },
+    { "name": "CORS_ORIGINS", "required": false, "description": "Comma-separated browser origins if the dashboard is hosted separately." },
+    { "name": "OPENAI_API_KEY", "required": false, "description": "Optional. Enables live AI triage; rule-based fallback is used when empty." }
+  ],
+  "pricing_plans": [
+    {
+      "name": "Starter clinic",
+      "currency": "USD",
+      "amount": 29,
+      "frequency": "monthly",
+      "description": "One clinic instance with USSD, SMS, and the web dashboard."
+    },
+    {
+      "name": "District network",
+      "currency": "USD",
+      "amount": 79,
+      "frequency": "monthly",
+      "description": "Multi-facility instance with Voice emergency callbacks and CHW airtime rewards."
+    },
+    {
+      "name": "Starter (NGN)",
+      "currency": "NGN",
+      "amount": 15000,
+      "frequency": "monthly",
+      "description": "One clinic instance priced for West Africa marketplace buyers."
+    }
+  ],
+  "demo_logins": [
+    { "role": "Clinic nurse", "email": "chipo@mashava.clinic", "password": "changeme" },
+    { "role": "Hospital", "email": "farai@gutu.hospital", "password": "changeme" },
+    { "role": "Admin", "email": "admin@safepass.co.zw", "password": "changeme" }
+  ]
+}

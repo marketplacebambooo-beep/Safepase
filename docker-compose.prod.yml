@@ -1,0 +1,47 @@
+services:
+  backend:
+    build: .
+    restart: unless-stopped
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=sqlite:///./data/safepass.db
+      - SMS_PROVIDER=${SMS_PROVIDER:-africas_talking}
+      - WHATSAPP_PROVIDER=${WHATSAPP_PROVIDER:-africas_talking}
+      - AT_USERNAME=${AT_USERNAME}
+      - AT_API_KEY=${AT_API_KEY}
+      - PUBLIC_API_URL=${PUBLIC_API_URL}
+      - USSD_SERVICE_CODE=${USSD_SERVICE_CODE:-*123#}
+      - SMS_SENDER_ID=${SMS_SENDER_ID:-SAFEPASS}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - USSD_CALLBACK_SECRET=${USSD_CALLBACK_SECRET}
+      - EDD_REMINDER_ENABLED=true
+      - RATE_LIMIT_ENABLED=true
+      - SEED_ON_STARTUP=false
+    volumes:
+      - safepass-data:/app/data
+    expose:
+      - "8001"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ""
+    restart: unless-stopped
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  safepass-data:
