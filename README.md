@@ -1,15 +1,19 @@
 # SafePass — Maternal Referral & Birth Preparedness Network
 
-Production-ready platform coordinating maternal care from CHW (USSD) → clinic nurse → hospital with live SMS notifications.
+Marketplace-ready platform coordinating maternal care from CHW (USSD) → clinic nurse → hospital with live SMS, Voice, WhatsApp, and Airtime via Africa's Talking.
+
+Repo: [github.com/WeCODE22/safepass](https://github.com/WeCODE22/safepass)
 
 ## Architecture
 
 | Layer | Technology |
 |-------|------------|
-| CHW field workers | USSD `*123#` via Africa's Talking gateway |
+| CHW field workers | USSD `*123#` via Africa's Talking |
 | Clinic / Hospital | React web dashboard |
-| SMS | Africa's Talking (configurable) |
-| API | FastAPI + SQLAlchemy |
+| SMS / WhatsApp | Africa's Talking Bulk SMS + WhatsApp |
+| Voice | Africa's Talking outbound calls for red/emergency events |
+| Airtime | Africa's Talking CHW rewards for registrations and danger-sign reports |
+| API | FastAPI 2.2.0 + SQLAlchemy (SQLite by default) |
 
 ## First-time setup
 
@@ -19,7 +23,7 @@ Production-ready platform coordinating maternal care from CHW (USSD) → clinic 
 cd safepass/backend
 pip install -r requirements.txt
 cp .env.example .env
-# Edit .env — set SECRET_KEY, SMS credentials, etc.
+# Edit .env — set SECRET_KEY, AT_USERNAME, AT_API_KEY, AT_VOICE_PHONE, etc.
 ```
 
 For initial facilities and staff accounts:
@@ -44,13 +48,17 @@ npm install
 npm run dev
 ```
 
+Dev server: `http://localhost:5173` (use `--port 5174` if 5173 is already taken). Vite proxies `/api`, `/ussd`, `/voice`, and `/health` to the API on port 8001.
+
 For production, set `VITE_API_URL` to your API origin and build:
 
 ```bash
 VITE_API_URL=https://api.yourdomain.com npm run build
 ```
 
-## Live SMS & USSD — physical phone (Option B)
+The marketplace Docker image builds the frontend into the API container, so `VITE_API_URL` can stay empty (same origin).
+
+## Live SMS, USSD, Voice & Airtime — physical phone
 
 Use the **live** account at [account.africastalking.com](https://account.africastalking.com). Sandbox and the web simulator do **not** work on real handsets.
 
@@ -60,12 +68,13 @@ Use the **live** account at [account.africastalking.com](https://account.africas
 |------|--------|
 | 1 | Create **Team** + **App** on live AT → note `AT_USERNAME` |
 | 2 | **Settings → API Key** → generate → paste into `.env` as `AT_API_KEY` |
-| 3 | Email **support@africastalking.com** (template: `backend/at_live_request_email.txt`) — request USSD code, SAFEPASS sender ID, phone whitelist |
+| 3 | Email **support@africastalking.com** (template: `backend/at_live_request_email.txt`) — request USSD code, SAFEPASS sender ID, Voice number, phone whitelist |
 | 4 | Expose API on **HTTPS** (`ngrok http 8001` or deploy) → set `PUBLIC_API_URL` |
 | 5 | AT dashboard → **USSD** → callback `{PUBLIC_API_URL}/ussd/callback` |
-| 6 | Register CHW handset: `python register_chw_phone.py +26377xxxxxxx` |
-| 7 | Test SMS: `python test_live_at.py +26377xxxxxxx` |
-| 8 | Dial assigned `USSD_SERVICE_CODE` from physical phone |
+| 6 | AT dashboard → **Voice** → callback `{PUBLIC_API_URL}/voice/callback` and set `AT_VOICE_PHONE` |
+| 7 | Register CHW handset: `python register_chw_phone.py +26377xxxxxxx` |
+| 8 | Test SMS: `python test_live_at.py +26377xxxxxxx` |
+| 9 | Dial assigned `USSD_SERVICE_CODE` from physical phone |
 
 ### .env (live)
 
@@ -73,21 +82,24 @@ Use the **live** account at [account.africastalking.com](https://account.africas
 AT_USERNAME=your_live_app_username
 AT_API_KEY=atsk_live_key_here
 SMS_SENDER_ID=SAFEPASS
+AT_VOICE_PHONE=+26377xxxxxxx
 PUBLIC_API_URL=https://your-https-url
 USSD_SERVICE_CODE=*assigned-code#
+AIRTIME_CURRENCY=USD
+AIRTIME_AMOUNT=0.20
 ```
 
-Restart backend after changes. Check **SMS & WhatsApp Log** in the app for channel status.
+Restart backend after changes. Check **Channel Log** in the app for SMS, WhatsApp, Voice, and Airtime status.
 
 ## Workflows
 
-1. **CHW registers patient** via USSD `*123#` → option 1 (includes risk factors)
+1. **CHW registers patient** via USSD `*123#` → option 1 (includes risk factors) → optional airtime reward
 2. **CHW check-in** via USSD option 2 → persisted as visits, clinic notified
-3. **CHW reports danger sign** via USSD option 3 → clinic nurses receive SMS
+3. **CHW reports danger sign** via USSD option 3 → clinic nurses receive SMS; red/emergency also triggers a Voice call; CHW may receive airtime
 4. **Nurse registers patient** via web dashboard → Register Patient (consent stored)
 5. **Nurse records danger signs** on patient detail → risk recalculated
 6. **Nurse completes birth prep** including escort phone → checklist tracked
-7. **Nurse issues referral** → hospital staff + patient receive SMS
+7. **Nurse issues referral** → hospital staff + patient receive SMS; emergency/high-risk also Voice-calls the hospital
 8. **Hospital updates status** (including cancel/no-show) → validated state machine
 9. **Hospital views patient** from referral card → read-only patient summary
 10. **Admin manages** facilities, users, CHWs, district analytics
@@ -129,7 +141,7 @@ cd safepass
 docker compose -f docker-compose.prod.yml up --build -d
 ```
 
-Serves on port **80** with nginx proxying `/api` and `/ussd` to the backend.
+Serves on port **80** with nginx proxying `/api`, `/ussd`, `/voice`, and `/health` to the backend.
 
 ## EDD SMS reminders
 
@@ -181,6 +193,8 @@ cd safepass/backend
 python -m pytest tests/ -v
 ```
 
+Tests force `SMS_PROVIDER`, `WHATSAPP_PROVIDER`, `VOICE_PROVIDER`, and `AIRTIME_PROVIDER` to `log` so they never call live Africa's Talking.
+
 ## API health
 
-`GET /health` returns service status and active SMS provider.
+`GET /health` returns service status plus SMS, WhatsApp, Voice, and Airtime channel state.

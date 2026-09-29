@@ -16,6 +16,7 @@ A missing logo blocks submission. Use `marketplace/logo.png`.
 | Industry | Government, Other |
 | Database | SQLite file at `/app/data/safepass.db` (persist volume `/app/data`) |
 | Image | Build with `docker build -t safepass .` then push to the AT-Container registry from the submission form |
+| Git repo | https://github.com/WeCODE22/safepass |
 | Port | `8001` (override with `PORT`) |
 | Health | `GET /health` |
 

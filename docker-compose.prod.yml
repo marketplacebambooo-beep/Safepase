@@ -7,8 +7,11 @@ services:
       - DATABASE_URL=sqlite:///./data/safepass.db
       - SMS_PROVIDER=${SMS_PROVIDER:-africas_talking}
       - WHATSAPP_PROVIDER=${WHATSAPP_PROVIDER:-africas_talking}
+      - VOICE_PROVIDER=${VOICE_PROVIDER:-africas_talking}
+      - AIRTIME_PROVIDER=${AIRTIME_PROVIDER:-africas_talking}
       - AT_USERNAME=${AT_USERNAME}
       - AT_API_KEY=${AT_API_KEY}
+      - AT_VOICE_PHONE=${AT_VOICE_PHONE}
       - PUBLIC_API_URL=${PUBLIC_API_URL}
       - USSD_SERVICE_CODE=${USSD_SERVICE_CODE:-*123#}
       - SMS_SENDER_ID=${SMS_SENDER_ID:-SAFEPASS}

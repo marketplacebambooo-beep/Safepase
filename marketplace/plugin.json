@@ -6,7 +6,7 @@
   "logo": "marketplace/logo.png",
   "at_products": ["USSD", "Bulk SMS", "Voice", "Airtime"],
   "industries": ["Government", "Other"],
-  "git_repo": "",
+  "git_repo": "https://github.com/WeCODE22/safepass",
   "database": {
     "engine": "sqlite",
     "path": "/app/data/safepass.db",
