@@ -129,6 +129,13 @@ One image serves the API, USSD/Voice callbacks, and the built dashboard. This is
 docker compose -f docker-compose.marketplace.yml up --build
 ```
 
+Published image (built on every push to `master`):
+
+```bash
+docker pull ghcr.io/wecode22/safepass:latest
+docker run --rm -p 8001:8001 --env-file backend/.env ghcr.io/wecode22/safepass:latest
+```
+
 App: `http://localhost:8001` · Health: `http://localhost:8001/health`
 
 Listing copy, env contract, pricing, and logo: `marketplace/MARKETPLACE.md`. Idea-form pitch: `marketplace/HACKATHON_IDEA.md`.

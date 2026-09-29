@@ -13,7 +13,7 @@
     "volume": "/app/data"
   },
   "container": {
-    "image": "safepass:latest",
+    "image": "ghcr.io/wecode22/safepass:latest",
     "port": 8001,
     "port_env": "PORT",
     "health": "/health"

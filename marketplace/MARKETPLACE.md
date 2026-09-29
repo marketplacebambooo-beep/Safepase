@@ -15,7 +15,7 @@ A missing logo blocks submission. Use `marketplace/logo.png`.
 | AT products | USSD, Bulk SMS, Voice, Airtime |
 | Industry | Government, Other |
 | Database | SQLite file at `/app/data/safepass.db` (persist volume `/app/data`) |
-| Image | Build with `docker build -t safepass .` then push to the AT-Container registry from the submission form |
+| Image | `ghcr.io/wecode22/safepass:latest` (also build locally with `docker build -t safepass .`) |
 | Git repo | https://github.com/WeCODE22/safepass |
 | Port | `8001` (override with `PORT`) |
 | Health | `GET /health` |
@@ -65,7 +65,7 @@ Full list: `marketplace/plugin.json` and `backend/.env.example`.
 ```bash
 docker build -t safepass .
 # Use the registry host, username, and password from the Marketplace submission form
-docker tag safepass <at-registry>/safepass:latest
+docker tag ghcr.io/wecode22/safepass:latest <at-registry>/safepass:latest
 docker push <at-registry>/safepass:latest
 ```
 
