@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  IMAGE: ghcr.io/wecode22/safepass
+  IMAGE: ghcr.io/marketplacebambooo-beep/safepase
 
 jobs:
   test-and-build:

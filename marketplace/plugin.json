@@ -6,14 +6,14 @@
   "logo": "marketplace/logo.png",
   "at_products": ["USSD", "Bulk SMS", "Voice", "Airtime"],
   "industries": ["Government", "Other"],
-  "git_repo": "https://github.com/WeCODE22/safepass",
+  "git_repo": "https://github.com/marketplacebambooo-beep/Safepase",
   "database": {
     "engine": "sqlite",
     "path": "/app/data/safepass.db",
     "volume": "/app/data"
   },
   "container": {
-    "image": "ghcr.io/wecode22/safepass:latest",
+    "image": "ghcr.io/marketplacebambooo-beep/safepase:latest",
     "port": 8001,
     "port_env": "PORT",
     "health": "/health"

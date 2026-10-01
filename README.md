@@ -2,7 +2,7 @@
 
 Marketplace-ready platform coordinating maternal care from CHW (USSD) → clinic nurse → hospital with live SMS, Voice, WhatsApp, and Airtime via Africa's Talking.
 
-Repo: [github.com/WeCODE22/safepass](https://github.com/WeCODE22/safepass)
+Repo: [github.com/marketplacebambooo-beep/Safepase](https://github.com/marketplacebambooo-beep/Safepase)
 
 ## Architecture
 
@@ -132,8 +132,8 @@ docker compose -f docker-compose.marketplace.yml up --build
 Published image (built on every push to `master`):
 
 ```bash
-docker pull ghcr.io/wecode22/safepass:latest
-docker run --rm -p 8001:8001 --env-file backend/.env ghcr.io/wecode22/safepass:latest
+docker pull ghcr.io/marketplacebambooo-beep/safepase:latest
+docker run --rm -p 8001:8001 --env-file backend/.env ghcr.io/marketplacebambooo-beep/safepase:latest
 ```
 
 App: `http://localhost:8001` · Health: `http://localhost:8001/health`
