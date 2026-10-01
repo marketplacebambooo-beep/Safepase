@@ -58,7 +58,9 @@ Any clinic, NGO, or ministry can deploy their own isolated instance from the Afr
 
 ## Team / contact
 
-Fill with your names, emails, Slack handles, and GitHub URL before submitting the form.
+GitHub: https://github.com/marketplacebambooo-beep/Safepase
+
+Fill names, emails, and Slack handles before submitting the form.
 
 ## Links to fill on the form
 
